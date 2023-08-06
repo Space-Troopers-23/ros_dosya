@@ -1,0 +1,105 @@
+# otonom butona basma ile ilgili eklentili aruco kodu
+
+from __future__ import print_function
+from six.moves import input
+import cv2
+import sys
+import copy
+import rospy
+import moveit_commander
+import moveit_msgs.msg
+import geometry_msgs.msg
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import math
+try:
+    from math import pi, tau, dist, fabs, cos
+except:  # For Python 2 compatibility
+    from math import pi, fabs, cos, sqrt
+    tau = 2.0 * pi
+
+    def dist(p, q):
+        return sqrt(sum((p_i - q_i) ** 2.0 for p_i, q_i in zip(p, q)))
+
+from std_msgs.msg import String
+from moveit_commander.conversions import pose_to_list
+
+ARUCO_DICT = {
+    # ArUco işareti sözlükleri burada listeleniyor (devam edebilir)
+}
+
+TARGET_MARKER_ID = 2  # Hedef ArUco işareti ID'si
+
+def main_position():
+    # Manipülatörü ana konuma getiren işlev
+    # İstenirse manipülatörün başlangıç konumunu burada ayarlayabilirsiniz
+    # ...
+
+def twofour_position():
+    # Manipülatörü başka bir konuma getiren işlev
+    # İstenirse başka bir hedef konumunun ayarlandığı yer olabilir
+    # ...
+
+def image_callback(msg):
+    # İmaj geri çağrı işlevi burada
+    # ArUco işaretlerini algılamak için bu işlevi kullanabilirsiniz
+    # ...
+
+def aruco_display(corners, ids, image):
+    # ArUco işaretlerini görselleştirmek için bu işlevi kullanabilirsiniz
+    # ...
+
+def approach():
+    # Manipülatörü hedef düğmeye yaklaştıran işlev
+    # Burada manipülatörü düğmeye yönlendirmek için ilgili işlemleri gerçekleştirebilirsiniz
+    # Örnek olarak düğme koordinatları belirlenerek manipülatörü düğmeye yaklaştırmak gibi
+    # ...
+
+def yaklas(dugme_x, dugme_y):
+    # Manipülatörü belirli bir düğmeye yaklaştıran alt işlev
+    # Örnek olarak manipülatörü düğme konumuna yönlendirebilirsiniz
+    # ...
+
+def dugme_bas():
+    # Düğme basma işlemini gerçekleştiren alt işlev
+    # Örnek olarak düğmeye doğru inerek düğmeyi basma gibi işlemler yapılabilir
+    # ...
+
+def otonom_hareket():
+    # Örnek olarak, düğmeye yönlendirme ve düğmeyi basma işlemlerini gerçekleştiren otonom hareket işlevi
+    # Düğme koordinatlarını burada belirleyin ve ilgili işlemleri gerçekleştirin
+    # ...
+
+moveit_commander.roscpp_initialize(sys.argv)
+rospy.init_node("move_group_python_interface_tutorial", anonymous=True)
+
+robot = moveit_commander.RobotCommander()
+scene = moveit_commander.PlanningSceneInterface()
+
+group_name = "manipulator"
+move_group = moveit_commander.MoveGroupCommander(group_name)
+
+display_trajectory_publisher = rospy.Publisher(
+    "/move_group/display_planned_path",
+    moveit_msgs.msg.DisplayTrajectory,
+    queue_size=20,
+)
+
+planning_frame = move_group.get_planning_frame()
+eef_link = move_group.get_end_effector_link()
+group_names = robot.get_group_names()
+
+print(robot.get_current_state())
+
+#image_sub = rospy.Subscriber("camera_image/image_raw", Image, image_callback)
+#Function Area Start
+
+main_position()
+#twofour_position()
+approach()
+otonom_hareket()  # Yeni tanımlanan otonom_hareket() işlevini burada çağırın
+
+#Function Area End
+
+rospy.spin()
+cv2.destroyAllWindows()
